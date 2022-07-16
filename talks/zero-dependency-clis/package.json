@@ -1,0 +1,25 @@
+{
+  "name": "zero-dependency-clis",
+  "version": "1.0.0",
+  "description": "Building a modern CLI app with no dependencies",
+  "author": "Ian Sutherland <ian@iansutherland.ca>",
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iansu/talks",
+    "directory": "talks/zero-dependency-clis"
+  },
+  "scripts": {
+    "start": "slidev --open",
+    "dev": "slidev --open",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@iconify-json/heroicons-outline": "^1.1.1",
+    "@iconify-json/simple-icons": "^1.1.14",
+    "@slidev/cli": "^0.34.3",
+    "slidev-theme-iansu": "^1.0.0"
+  }
+}

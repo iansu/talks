@@ -1,0 +1,196 @@
+@import 'prism-theme-vars/base.css';
+@import 'codemirror-theme-vars/base.css';
+@import 'prism-theme-vars/to-codemirror.css';
+
+html {
+  --iansu-error: #e00;
+  --iansu-success: #0070f3;
+  --iansu-warning: #f5a623;
+  --iansu-violet: #7928ca;
+  --iansu-cyan-light: #79ffe1;
+  --iansu-cyan: #50e3c2;
+  --iansu-highlight-purple: #f81ce5;
+
+  --iansu-radius: 5px;
+
+  --iansu-gap-quarter: 6px;
+  --iansu-gap-half: 12px;
+  --iansu-gap: 24px;
+  --iansu-gap-double: 48px;
+
+  color: var(--iansu-foreground);
+  background-color: var(--iansu-background);
+  @apply antialiased;
+  font-family: 'Inter', sans-serif;
+}
+html.light {
+  --iansu-background: #fff;
+  --accents-1: #fafafa;
+  --accents-2: #eaeaea;
+  --accents-3: #999;
+  --accents-4: #888;
+  --accents-5: #666;
+  --accents-6: #444;
+  --accents-7: #333;
+  --accents-8: #111;
+  --iansu-foreground: #000;
+}
+html.dark {
+  --iansu-background: #000;
+  --accents-1: #111;
+  --accents-2: #333;
+  --accents-3: #444;
+  --accents-4: #666;
+  --accents-5: #888;
+  --accents-6: #999;
+  --accents-7: #eaeaea;
+  --accents-8: #fafafa;
+  --iansu-foreground: #fff;
+}
+
+/* prism styles */
+:root {
+  --prism-font-family: var(--slidev-code-font-family);
+  --prism-block-radius: var(--iansu-radius);
+  --prism-foreground: var(--iansu-foreground);
+  --prism-background: var(--iansu-background);
+  --prism-keyword: var(--iansu-highlight-purple);
+  --prism-function: var(--iansu-success);
+  --prism-number: var(--iansu-success);
+  --prism-class: var(--iansu-success);
+  --prism-string: var(--iansu-cyan);
+  --prism-builtin: var(--iansu-cyan);
+  --prism-comment: var(--accents-4);
+}
+
+::selection {
+  color: var(--iansu-foreground);
+  background-color: var(--iansu-cyan-light);
+}
+
+.dark #slide-content,
+.light #slide-content {
+  color: var(--accents-6);
+  background-color: var(--iansu-background);
+  padding: 2rem 3rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: var(--iansu-foreground);
+  font-weight: 800;
+  margin: 3rem 0 1rem;
+  @apply text-4xl;
+}
+h2 {
+  color: var(--iansu-foreground);
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+  @apply text-3xl;
+}
+h3 {
+  color: var(--iansu-foreground);
+  font-weight: 600;
+  margin: 2rem 0 1rem;
+  @apply text-2xl;
+}
+h4 {
+  color: var(--iansu-foreground);
+  font-weight: 500;
+  margin: 1.5rem 0 1rem;
+  @apply text-xl;
+}
+p {
+  margin: 1rem 0;
+  @apply leading-relaxed;
+}
+strong {
+  color: var(--accents-7);
+}
+a {
+  color: var(--iansu-success);
+}
+
+* {
+  @apply select-none;
+}
+code,
+code * {
+  @apply select-text;
+}
+code {
+  font-family: 'Fira Code', monospace;
+}
+
+:not(pre) > code {
+  color: var(--iansu-highlight-purple);
+  @apply text-sm;
+}
+:not(pre) > code:before,
+:not(pre) > code:after {
+  content: '`';
+  color: var(--iansu-highlight-purple);
+}
+
+pre {
+  border: 1px solid var(--accents-2);
+}
+
+ul,
+ol {
+  list-style-type: disc;
+  @apply ml-5;
+}
+
+ol {
+  list-style-type: decimal;
+  @apply ml-5;
+}
+
+li {
+  @apply my-2;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  @apply my-4;
+}
+tr {
+  height: var(--iansu-gap-double);
+}
+th,
+td {
+  vertical-align: middle;
+}
+thead > tr {
+  height: 40px;
+}
+th {
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--accents-5);
+  background: var(--accents-1);
+  padding: 0 var(--iansu-gap-half);
+  border-top: 1px solid var(--accents-2);
+  border-bottom: 1px solid var(--accents-2);
+}
+th:first-child {
+  border-left: 1px solid var(--accents-2);
+  border-radius: var(--iansu-radius) 0 0 var(--iansu-radius);
+}
+th:last-child {
+  border-right: 1px solid var(--accents-2);
+  border-radius: 0 var(--iansu-radius) var(--iansu-radius) 0;
+}
+td {
+  color: var(--accents-6);
+  padding: var(--iansu-gap-quarter) var(--iansu-gap-half);
+}
+tr:not(:last-of-type) td {
+  border-bottom: 1px solid var(--accents-2);
+}

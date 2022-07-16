@@ -1,0 +1,27 @@
+{
+  "name": "talks",
+  "version": "1.0.0",
+  "description": "A collection of slides from talks by @iansu",
+  "author": "Ian Sutherland <ian@iansutherland.ca>",
+  "license": "UNLICENSED",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iansu/talks"
+  },
+  "workspaces": [
+    "packages/*",
+    "talks/*"
+  ],
+  "scripts": {
+    "format": "prettier --write '**/*.{js,ts,vue,css,json,md,yml,html}'",
+    "format:check": "prettier --check '**/*.{js,ts,vue,css,json,md,yml,html}'",
+    "clean": "rimraf node_modules/* packages/**/node_modules talks/**/node_modules"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3",
+    "rimraf": "^3.0.2"
+  }
+}

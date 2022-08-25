@@ -9,6 +9,12 @@ export default defineWindiSetup(() => ({
   },
   shortcuts: {
     // custom the default background
-    'bg-main': 'bg-white text-[#181818] dark:(bg-[#121212] text-[#ddd])',
+    // 'bg-main': 'bg-white text-[#181818] dark:(bg-[#121212] text-[#ddd])',
+  },
+  theme: {
+    fontFamily: {
+      sans: "'Inter', sans-serif",
+      mono: "'Fira Code', monospace",
+    },
   },
 }))

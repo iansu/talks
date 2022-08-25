@@ -30,7 +30,7 @@
     "highlighter": "all",
     "defaults": {
       "fonts": {
-        "sans": "Nunito Sans",
+        "sans": "Inter",
         "mono": "Fira Code"
       },
       "hightlighter": "prism"

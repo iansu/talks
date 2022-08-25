@@ -1,6 +1,6 @@
 ---
 title: Zero Dependency CLIs with Node.js
-theme: slidev-theme-iansu-new
+theme: slidev-theme-iansu
 ---
 
 # Zero Dependency CLIs

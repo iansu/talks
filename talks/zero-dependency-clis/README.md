@@ -16,6 +16,12 @@ Extended version, Harvest Tech Talks - July 28, 2022
 
 [Slides](slides-v2.pdf)
 
+### v3
+
+Short version, CascadiaJS - September 1, 2022
+
+[Slides](slides-v3.pdf)
+
 ## Running
 
 1. `npm install`

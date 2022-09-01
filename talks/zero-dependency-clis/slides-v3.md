@@ -28,7 +28,7 @@ First let me quickly introduce myself.
 
 My name is Ian Sutherland and I'm an Architect and the Head of Developer Experience and Open Source at Neo Financial, which is a Canadian fintech startup.
 
-I'm also a Node.js contributor where I mostly work on the Tooling Working Group which I'll be covering more in this talk.
+I'm also a Node.js contributor where I mostly work on the Tooling Working Group
 
 You can find me on Twitter and GitHub @iansu.
 -->
@@ -41,13 +41,15 @@ You can find me on Twitter and GitHub @iansu.
 
 - What is a CLI app and why are we talking about them?
 - What are dependencies and why are we trying to avoid them?
+- Why build CLI apps with Node.js?
 - What new Node.js features can help us write CLI apps?
 - What new Node.js features might be coming next?
-- Testing all these new Node.js features
 
 </v-clicks>
 
 <!--
+**BEFORE**
+
 Here's an overview of we're going to cover
 -->
 
@@ -68,7 +70,17 @@ What are they?
 </v-clicks>
 
 <!--
-Most of you probably know what a CLI app is but just in case I'll explain it quickly and also cover some basic terminology that will come in handy later.
+**AFTER**
+
+Who here has used a CLI app before?
+
+Who here has built a CLI app before?
+
+Who here has written a script or a shell script before?
+
+Who's used Node.js to build a CLI or script before?
+
+A lot of you are already familiar with CLI apps but we're going to look at a few examples and cover some basic terminology
 -->
 
 ---
@@ -76,11 +88,11 @@ Most of you probably know what a CLI app is but just in case I'll explain it qui
 # CLI Apps
 
 <div class="-mt-10 w-full text-center">
-  <img src="/ls.svg" class="mx-auto" />
+  <img src="/ls2.svg" class="mx-auto w-180" />
 </div>
 
 <!--
-Here's an example of the output from ls
+Here's an example of the `ls` command
 
 Relatively simple CLI that takes a number of arguments and options
 
@@ -103,8 +115,6 @@ Could be written as `-l` and `-1` but it's common to combine them
 Git is a much more complex CLI app that has a number of different subcommands (like status shown here)
 
 Those subcommands take all kinds of different arguments and options
-
-An argument like the subcommand here is sometimes called a positional
 -->
 
 ---
@@ -117,10 +127,11 @@ Why am I talking about them?
 
 - I work on a number of CLI apps as a part of my job and use them daily
 - I just really like CLI apps
-  - They're fun to build and the terminal is a challenging, somewhat constrained, environment
+  - They're fun to build
+  - The terminal is a challenging and constrained environment
   - Serious 80s vibes
 - The things I'm talking about here don't just apply to CLI apps
-- There are other types of apps that have similar constraints and I'll talk about some of them a bit more later
+- There are other types of apps that have similar constraints
   - Serverless functions
   - Shell scripts
   - GitHub Actions
@@ -133,11 +144,13 @@ Why am I talking about them?
 
 <v-clicks>
 
-- Shell scripts are often built with scripting languages like Perl or Python so why not Node.js?
+- Shell scripts are often written with scripting languages like Perl or Python so why not Node.js?
 - Use the language you (and your team/collaborators) are already familiar with
 - Node.js is really good at some things
   - Working with JSON data
   - Doing tasks in parallel like reading and writing files, making network requests, etc.
+- Node.js has a huge package ecosystem
+  - Even though we're trying to avoid dependencies for this talk they are still very useful and npm has _a lot_ of them
 
 </v-clicks>
 
@@ -179,7 +192,7 @@ Are dependencies bad?
 - Dependencies do introduce some overhead in the development and deploy process
   - Users need to install the dependencies to run and develop on a project
   - Dependencies need to be installed or bundled at build time
-- If you're building a complex app it probably already has a build and deploy pipeline and many dependencies so adding more dependencies probably doesn't make much of a difference
+- If you're building a complex app it probably already has a build and deploy pipeline and many dependencies so adding more dependencies likely doesn't make much of a difference
 - For smaller apps and libraries, like CLIs or shell scripts, not having an install or build step makes setup, contributing and distribution easier
 
 </v-clicks>
@@ -189,11 +202,7 @@ Are dependencies bad?
 
 In the case of a shell script, having dependencies means you either have to install those dependencies to use the script, which is really not how shell scripts work. They are generally self-contained.
 
-Fun fact: did you know that some UNIX CLI apps are actually just scripts? Most of them are binaries but some aren't.
-
-For example, the `shasum` command, which lets you caclculate the SHA hash of a file, is actually just a Perl script.
-
-The other option is to bundle your code and dependencies using something like webpack. There are tools like ncc that do this but that results in large files. For example, we have a basic CLI app at Neo called the Neo CLI and the compiled version of it is 12MB!
+The other option is to bundle your code and dependencies using something like webpack. There are tools like ncc from Vercel that do this but that results in large files. For example, we have a basic CLI app at Neo called the Neo CLI and the compiled version of it is 12MB!
 
 Bundling with webpack also doesn't work with all dependencies
 -->
@@ -207,7 +216,11 @@ Bundling with webpack also doesn't work with all dependencies
 <!--
 What's new in Node.js
 
-First I want to explain some new syntax I'm going to be using...
+A little disclaimer before I talk about these new features: I did not build all of these things and I wasn't involved at all in some of them
+
+Node.js is a huge project with lots of collaborators and contributors and a lot of people worked on these new features and features that they're built on top of
+
+Before we get to the code I want to explain some new syntax I'm going to be using...
 -->
 
 ---
@@ -233,21 +246,7 @@ I'm going to be using some new syntax in these examples
 
 Since pretty much every package name is taken on npm it's basically impossible to add new modules to Node.
 
-New syntax allows that and makes it more clear where something is imported from.
-
-This also helps prevent dependency confusion with similarly named packages.
--->
-
----
-
-# fs Package on npm
-
-<div class="mt-10 w-full text-center">
-  <img src="/fs-holding-package.png" class="mx-auto h-80" />
-</div>
-
-<!--
-For example, here's what the fs package looks like on npm
+This new namespace solves that and makes it more clear where something is imported from.
 
 Okay, now on to the fun stuff!
 -->
@@ -297,7 +296,7 @@ const args = process.argv;
 // ['node', 'mycli', '--silent']
 // ['node', 'mycli', '-s']
 // ['node', 'mycli', '--silent=true']
-// ['node', 'mycli', '--slient', 'false']
+// ['node', 'mycli', '--slient', 'true']
 // ['node', 'mycli', '--no-silent']
 ```
 
@@ -352,7 +351,7 @@ const { values } = parseArgs({ input, options });
 <!--
 **BETWEEN**
 
-Note that we're still slicing off the first two element of process.argv. This is to get rid of the node executable and the name of your script.
+Note that we're slicing off the first two element of process.argv. This is to get rid of the node executable and the name of your script.
 
 There is another proposal being worked on to define something called `mainArgs` which would give you only the arguments passed to your script.
 -->
@@ -382,16 +381,6 @@ For the fifth example you don't automatically get a no prefixed flag to set a va
 
 You'll notice in each of these error cases that we get a pretty good and clear error message from parseArgs.
 
-**AFTER**
-
-Argument parsing is something the tooling group worked on for a long time.
-
-Lots of different people participated in shaping the API and implementing this feature. I helped a tiny bit and am one of many people that worked on this.
-
-Remember when I mentioned Yargs and Commander earlier? The maintainers of both of those projects worked on this package.
-
-**SCROLL DOWN**
-
 As I mentioned earlier, this is available in Node 18.3 but I believe it's also being backported to Node 16 very soon.
 -->
 
@@ -402,7 +391,7 @@ As I mentioned earlier, this is available in Node 18.3 but I believe it's also b
 </div>
 
 <!--
-There's also a polyfill at `@pkgjs/parseArgs`
+There's also a polyfill at `@pkgjs/parseargs`
 
 This is where we initially developed the library and where we work on and discuss new features
 -->
@@ -427,7 +416,7 @@ This is where we initially developed the library and where we work on and discus
 </div>
 
 <!--
-You're legally required to use this GIF when talking about Fetch
+You're legally required to use this GIF when talking about Fetch in Node.js
 -->
 
 ---
@@ -444,12 +433,6 @@ You're legally required to use this GIF when talking about Fetch
 - Built with the Web Streams API which is also now available in Node.js 18
 
 </v-clicks>
-
-<!--
-**BETWEEN**
-
-Undici is made by some of the same people behind Fastify, Pino and other high-quality Node.js packages
--->
 
 ---
 
@@ -477,9 +460,6 @@ const body = await response.json();
 You'll notice you have to await getting the response body as JSON.
 
 This is because the response body is streamed from the server. This is much more efficient in the case of large responses.
-
-With Fetch this streaming is done with the WebStreams API, which was added to Node.js at the same time. Unfortunately WebStreams aren't compatible with Node's own built in streams but there are utilities for converting between the two stream types and connecting them to each other.
-
 -->
 
 ---
@@ -495,9 +475,9 @@ I'm going to tell you a story and we'll look at some code
 
 I learned a while ago that if you use a subcommand that git doesn't recognize it will look for a matching file in your path.
 
-For example, if you typed `git hello` it would realize that doesn't match and built in subcommands and will look for a file named `git-hello` on your path. If it finds it, it'll run it.
+For example, if you typed `git hello` it would realize that `hello` doesn't match any built in subcommands and will look for a file named `git-hello` on your path. If it finds it, it'll run it.
 
-This is pretty cool and a really nice way to make a CLI app extensible.
+This is a pretty cool way to make a CLI app extensible.
 
 A little while later I saw this tweet...
 -->
@@ -509,18 +489,22 @@ A little while later I saw this tweet...
 </div>
 
 <!--
-As a big Twitter user I thought this was pretty funny.
+If you're not familiar with `git blame` it displays a file and beside each line of code it shows the name or email address of the person who wrote it
 
-If you're not familiar with `git blame` it displays a file and beside each line or block of code it shows the name or email address of the person who wrote it or edited it last.
+I guess the idea with the name is that you can blame whoever introduced the bug you just found (it usually ends up being you)
 -->
 
 ---
 
 # Git Blame
 
-Screenshot of git blame
+<div class="w-full text-center">
+  <img src="/git-blame.png" class="mx-auto" />
+</div>
 
 <!--
+Here's an example of what git blame shows when I run it on these slides
+
 And then I saw a followup tweet...
 -->
 
@@ -531,26 +515,20 @@ And then I saw a followup tweet...
 </div>
 
 <!--
-I thought this is too perfect
-
-That's a great name and I just recently learned you can add your own commands to git
+That's a great name and I just recently learned you can add your own subcommands to git
 
 So I decided to build it.
 
-I figured I would need to write a script that would run `git blame` and then every time it encountered a new email address it would get that person's public profile from Twitter and if they provided their Twitter username display that instead of their email address.
+I figured I would need to write a script that would run `git blame` and then every time it encountered a new email address it would get that person's public profile from GitHub and if they provided their Twitter username display that instead of their email address.
 
 But this needed to be a self-contained shell script and it would need to make a request to the GitHub API.
 
-I could have written this in something like Bash maybe or Perl but I don't know Perl and Bash makes me sad.
-
-I also just wanted to make something quickly as a joke so I wanted to use what I know best: Node
-
-Unfortunately that meant using the built in HTTP library to hit the GitHub API and here's what that looks like...
+I wanted to use Node.js but that meant using the built in HTTP library to hit the GitHub API and here's what that looks like...
 -->
 
 ---
 
-```js{all|1|all}
+```js{all|1|4|5-11|14|17-19|21-23|25-29|all}
 const https = require('https');
 
 const githubRequest = async (path) => {
@@ -572,8 +550,6 @@ const githubRequest = async (path) => {
         });
         // The whole response has been received. Print out the result.
         resp.on('end', () => {
-          // console.log(data);
-
           resolve(JSON.parse(data));
         });
       })
@@ -587,11 +563,7 @@ const githubRequest = async (path) => {
 ```
 
 <!--
-Here's part of the code from this script.
-
-First we import the old HTTP 1 library from Node
-
-The rest of this is code that makes a request to the GitHub API using Node's HTTP client.
+This is the code that makes a request to the GitHub API using Node's HTTP client. You can see that it's an event based API and we have to handle various success and error events, we receive the data via multiple `data` events and have to assemble that all ourselves
 
 This is a lot of code. In fact it doesn't even all fit on this slide. It's also not particularly readable.
 
@@ -618,14 +590,20 @@ That's it.
 
 This code does all the same stuff, including error handling.
 
-From 30 lines of code to less than 10.
+From more than 30 lines of code to less than 10.
 -->
 
 ---
 
 # Git Blast
 
-Screenshot of `git blast` output
+<div class="w-full text-center">
+  <img src="/git-blast.png" class="mx-auto" />
+</div>
+
+<!--
+Here's what the output looks like now. You can see my Twitter name there next to each line instead of my email address.
+-->
 
 ---
 
@@ -664,13 +642,7 @@ Normally you might reach for something like Jest or Mocha.
 
 Those are great test frameworks and are a good option in a larger project like a microservice or a frontend App.
 
-A lot of libraries literally have a single JS file and a single test file with a handful of tests.
-
-There's another npm package called TAP which is a basic test runner.
-
-It was created by Isaac, the founder of npm, who's created many popular npm packages.
-
-The new Node.js test runner is built with TAP or really is just TAP.
+A lot of libraries on npm literally have a single JS file and a single test file with a handful of tests.
 -->
 
 ---
@@ -826,6 +798,8 @@ Now let's take a look at what might be coming next...
 
 # What's Next?
 
+Wild speculation edition
+
 <!--
 What do I want to see in Node.js in the future?
 
@@ -862,10 +836,6 @@ Pairs very nicely with recursive fs operations.
 Getting rid of the install step when distributing something like a CLI is a great start. You're still depending on your users to have a compatible version of Node installed though.
 
 Building a self-contained executable solves that problem too.
-
-We've been discussing this on and off for the last few years in the Tooling Group but no major progress yet.
-
-If you do want to do this I'd recommend a third-party package like boxednode or pkg.
 -->
 
 ---
@@ -914,104 +884,6 @@ Also feel free to reach out to me directly on Twitter or in person.
 
 ---
 
-# Trying It All Out
-
-<v-clicks>
-
-- I wanted a way to try out all these new features
-- What's a CLI app that makes API requests, downloads files and manipulates the filesystem? 🤔
-
-</v-clicks>
-
----
-
-<div class="mt-10 w-full text-center">
-  <img src="/i-should-build-a-package-manager.jpeg" class="mx-auto h-100" />
-</div>
-
-<!--
-When putting this talk together I found out this is called the "I should buy a boat cat", which is about as good of an idea as building a package manager
-
-If you know anything about Node.js you probably know that it comes with a package manager called npm.
-
-There are also a number of other package managers out there like Yarn and pnpm.
-
-I did actually start building this.
-
-I wanted to make it really clear that this was not something people should be using...
--->
-
----
-
-# Bad Package Manager
-
-Introducing Bad Package Manager (or `bad`). It's a package manager that is... bad. For science!
-
-<div class="mt-10 w-full text-center">
-  <img src="/bad-github.png" class="mx-auto h-60 border" />
-</div>
-
----
-
-# Bad Package Manager
-
-Introducing Bad Package Manager (or `bad`). It's a package manager that is... bad. For science!
-
-<v-clicks>
-
-- Might one day be a good CLI app
-- Will probably never be a good package manager
-- Ongoing project to test new features in a Node.js CLI app
-- Currently uses `parseArgs`, `fetch`, `test`, `rm`, `cp`, `mkdir`
-- Contributions welcome!
-  - [iansu/bad-package-manager](https://github.com/iansu/bad-package-manager)
-
-</v-clicks>
-
----
-
-# Bad Package Manager
-
-Currently supported features
-
-<v-clicks>
-
-- `bad install` - install all `dependencies` and `devDependencies` from `package.json`
-- `bad clean` - delete `node_modules`
-
-</v-clicks>
-
-<!--
-I should mention that all these features probably don't work great.
-
-It is the Bad Package Manager after all.
-
-If you try to run the install command in a big project with lots of dependencies it will probably fail or, at the very least, not build a correct dependency tree.
--->
-
----
-
-# Bad Package Manager
-
-Future ideas
-
-<v-clicks>
-
-- `bad install <package>` - install the named package and add it to `dependencies` in `package.json`
-- `bad install --dev <package>` - install the named package and add it to `devDependencies` in `package.json`
-- `bad uninstall <package>` - uninstall previously installed `dependencies` and `devDependencies`
-- `bad run <script>` - run scripts specified in `package.json`
-- `bad ls <package>` - list part of the package tree (hopefully with `fs.readdir`)
-- ?
-
-</v-clicks>
-
-<!--
-If you have ideas please feel free to open an issue or submit a PR to the project.
--->
-
----
-
 <!--
 That's all I've got for today.
 -->
@@ -1029,11 +901,7 @@ That's all I've got for today.
 </div>
 
 <!--
-Thanks for coming!
-
-If you have any questions I'd be happy to answer them now or after the talk.
-
-You can also reach out on Twitter or GitHub as well.
+Thanks!
 -->
 
 ---
